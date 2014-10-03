@@ -1,7 +1,7 @@
 Summary:	Software to create compressed audio files
 Name:		lame
 Version:	3.99.5
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/Sound
 Source0:	http://downloads.sourceforge.net/lame/%{name}-%{version}.tar.gz
@@ -45,9 +45,9 @@ Header files and devel documentation for LAME libraries.
 %patch1 -p1
 
 # fix deprecated AM
-sed -i "s|AM_C_PROTOTYPES.*||" configure.in
-sed -i "s| ansi2knr||" doc/*/Makefile.am
-sed -i "s| \$(top_srcdir)/ansi2knr||" libmp3lame/i386/Makefile.am
+%{__sed} -i "s|AM_C_PROTOTYPES.*||" configure.in
+%{__sed} -i "s| ansi2knr||" doc/*/Makefile.am
+%{__sed} -i "s| \$(top_srcdir)/ansi2knr||" libmp3lame/i386/Makefile.am
 
 %build
 %{__libtoolize}
@@ -68,7 +68,8 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-rm -rf $RPM_BUILD_ROOT%{_docdir}/lame/html
+%{__rm} -r $RPM_BUILD_ROOT%{_docdir}/lame/html
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/*.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -93,6 +94,5 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc API DEFINES
 %attr(755,root,root) %{_libdir}/lib*.so
-%{_libdir}/lib*.la
 %{_includedir}/lame
 
